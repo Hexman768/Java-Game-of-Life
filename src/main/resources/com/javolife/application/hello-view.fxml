@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javolife.application.HelloController">
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <MenuBar BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#onCloseMenuItemAction" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+         <right>
+            <Accordion fx:id="accdnMain" BorderPane.alignment="CENTER">
+              <panes>
+                <TitledPane fx:id="tltPaneMain" text="Main Controls">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <BorderPane prefHeight="299.0" prefWidth="200.0">
+                                 <top>
+                                    <BorderPane prefHeight="47.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                       <left>
+                                          <Button fx:id="btnStart" mnemonicParsing="false" text="Start" BorderPane.alignment="CENTER" />
+                                       </left>
+                                       <center>
+                                          <Button fx:id="btnPause" mnemonicParsing="false" text="Pause" BorderPane.alignment="CENTER" />
+                                       </center>
+                                       <right>
+                                          <Button fx:id="btnClear" mnemonicParsing="false" onMouseClicked="#onBtnClearPressed" text="Clear" BorderPane.alignment="CENTER" />
+                                       </right>
+                                       <bottom>
+                                          <Separator prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                       </bottom>
+                                    </BorderPane>
+                                 </top>
+                                 <center>
+                                    <BorderPane prefHeight="66.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                       <left>
+                                          <Spinner fx:id="rowSpinner" editable="true" prefHeight="30.0" prefWidth="80.0" BorderPane.alignment="CENTER" />
+                                       </left>
+                                       <right>
+                                          <Spinner fx:id="colSpinner" prefHeight="30.0" prefWidth="80.0" BorderPane.alignment="CENTER" />
+                                       </right>
+                                       <bottom>
+                                          <Label text="Rows              Cols" BorderPane.alignment="CENTER" />
+                                       </bottom>
+                                    </BorderPane>
+                                 </center>
+                                 <bottom>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                       <top>
+                                          <Separator prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                       </top>
+                                       <center>
+                                          <Button fx:id="btnRandomize" mnemonicParsing="false" onMouseClicked="#onBtnRandomizePressed" text="Randomize" BorderPane.alignment="TOP_CENTER" />
+                                       </center>
+                                       <bottom>
+                                          <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                             <left>
+                                                <Slider fx:id="sliderDensity" prefHeight="14.0" prefWidth="80.0" value="50.0" BorderPane.alignment="TOP_LEFT" />
+                                             </left>
+                                             <center>
+                                                <Label text="Density" BorderPane.alignment="TOP_CENTER" />
+                                             </center>
+                                             <right>
+                                                <Spinner fx:id="spinnerDensity" prefHeight="25.0" prefWidth="68.0" BorderPane.alignment="TOP_RIGHT" />
+                                             </right>
+                                          </BorderPane>
+                                       </bottom>
+                                    </BorderPane>
+                                 </bottom>
+                              </BorderPane>
+                           </children></AnchorPane>
+                  </content>
+                </TitledPane>
+                <TitledPane text="untitled 2">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+                <TitledPane text="untitled 3">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+              </panes>
+            </Accordion>
+         </right>
+         <left>
+            <Canvas fx:id="canvasMain" height="375.0" width="400.0" BorderPane.alignment="CENTER_LEFT" />
+         </left>
+      </BorderPane>
+   </children>
+</AnchorPane>
