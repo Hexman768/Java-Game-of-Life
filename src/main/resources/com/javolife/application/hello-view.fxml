@@ -49,10 +49,10 @@
                                  <top>
                                     <BorderPane prefHeight="47.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                        <left>
-                                          <Button fx:id="btnStart" mnemonicParsing="false" text="Start" BorderPane.alignment="CENTER" />
+                                          <Button fx:id="btnStart" mnemonicParsing="false" onAction="#onBtnStartPressed" text="Start" BorderPane.alignment="CENTER" />
                                        </left>
                                        <center>
-                                          <Button fx:id="btnPause" mnemonicParsing="false" text="Pause" BorderPane.alignment="CENTER" />
+                                          <Button fx:id="btnPause" mnemonicParsing="false" onAction="#onBtnPausePressed" text="Pause" BorderPane.alignment="CENTER" />
                                        </center>
                                        <right>
                                           <Button fx:id="btnClear" mnemonicParsing="false" onMouseClicked="#onBtnClearPressed" text="Clear" BorderPane.alignment="CENTER" />

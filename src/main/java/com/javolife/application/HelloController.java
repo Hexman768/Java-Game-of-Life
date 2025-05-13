@@ -4,6 +4,8 @@ import com.javolife.game.GameBoard;
 import com.javolife.game.GameCell;
 import com.javolife.game.GameConfiguration;
 import com.javolife.game.IGameCell;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,9 +13,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class handles events triggered by the user in the application interface.
@@ -44,12 +48,14 @@ public class HelloController implements Initializable {
     private GameBoard gameBoard;
     private GameConfiguration config;
     private GraphicsContext graphicsContext;
+    private Timeline animationLoop;
+    private boolean running;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         accdnMain.setExpandedPane(tltPaneMain);
         graphicsContext = canvasMain.getGraphicsContext2D();
-        config = new GameConfiguration(Color.BLACK, Color.WHITE, 25, 27, 15, 375, 375, 50);
+        config = new GameConfiguration(Color.BLACK, Color.WHITE, 25, 25, 15, 375, 375, 50);
         IGameCell[][] board = new GameCell[config.getRows()][config.getColumns()];
         for (int i = 0; i < config.getRows(); i++) {
             IGameCell[] column = new GameCell[config.getColumns()];
@@ -60,7 +66,7 @@ public class HelloController implements Initializable {
         }
         gameBoard = new GameBoard(config.getRows(), config.getColumns(), board);
         setDefaultSettings();
-        drawGameBoard(gameBoard);
+        drawGameBoard();
     }
 
     @FXML
@@ -71,16 +77,33 @@ public class HelloController implements Initializable {
     @FXML
     protected void onBtnRandomizePressed() {
         gameBoard.randomize(config.getRandomDensity());
-        drawGameBoard(gameBoard);
+        drawGameBoard();
+    }
+
+    @FXML
+    protected void onBtnStartPressed() throws InterruptedException {
+        running = true;
+        animationLoop = new Timeline(new KeyFrame(Duration.millis(300), e -> {
+            gameBoard.update();
+            drawGameBoard();
+        }));
+        animationLoop.setCycleCount(100);
+        animationLoop.play();
+    }
+
+    @FXML
+    protected void onBtnPausePressed() {
+        animationLoop.stop();
+        running = false;
     }
 
     @FXML
     protected void onBtnClearPressed() {
         gameBoard.clear();
-        drawGameBoard(gameBoard);
+        drawGameBoard();
     }
 
-    private void drawGameBoard(GameBoard board) {
+    private void drawGameBoard() {
         // canvas borders
         graphicsContext.setStroke(Color.BLACK);
         for (int row = 0; row < config.getRows(); row++) {
@@ -96,7 +119,7 @@ public class HelloController implements Initializable {
                 graphicsContext.strokeRect(j * config.getCellSize(), i * config.getCellSize(), config.getCellSize(), config.getCellSize());
                 graphicsContext.setFill(Color.WHITE);
                 graphicsContext.fillRect(j * config.getCellSize(), i * config.getCellSize(), config.getCellSize(), config.getCellSize());
-                if (board.getRow(i)[j].getState()) {
+                if (gameBoard.getRow(i)[j].getState()) {
                     graphicsContext.setFill(Color.BLACK);
                     graphicsContext.fillRect(j * config.getCellSize(), i * config.getCellSize(), config.getCellSize(), config.getCellSize());
                 }

@@ -9,6 +9,7 @@ public class GameBoard {
     private int rows;
     private int cols;
     private IGameCell[][] matrix;
+    private IGameCell[][] nextMatrix;
 
     /**
      * Constructs an instance of GameBoard with given values.
@@ -49,11 +50,9 @@ public class GameBoard {
     public void clear() {
         IGameCell[][] board = new IGameCell[rows][cols];
         for (int i = 0; i < rows; i++) {
-            IGameCell[] column = new IGameCell[cols];
             for (int j = 0; j < cols; j++) {
-                column[j] = GameCell.createGameCell(false);
+                board[i][j] = GameCell.createGameCell(j, i, false);
             }
-            board[i] = column;
         }
         matrix = board;
     }
@@ -64,13 +63,106 @@ public class GameBoard {
     public void randomize(double density) {
         IGameCell[][] board = new IGameCell[rows][cols];
         for (int i = 0; i < rows; i++) {
-            IGameCell[] column = new IGameCell[cols];
             for (int j = 0; j < cols; j++) {
                 double value = density / 100d;
-                column[j] = GameCell.createGameCell(Math.random() < value);
+                board[i][j] = GameCell.createGameCell(j, i, Math.random() < value);
             }
-            board[i] = column;
         }
         matrix = board;
+    }
+
+    private void prepare() {
+        nextMatrix = new IGameCell[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                nextMatrix[i][j] = GameCell.createGameCell(j, i, getNewCellState(matrix[i][j]));
+            }
+        }
+    }
+
+    /**
+     * Core game loop.
+     * Calls prepare method to create next generation matrix.
+     * Then calls commit to commit those changes to memory.
+     */
+    public void update() {
+        prepare();
+        commit();
+    }
+
+    private void commit() {
+        matrix = nextMatrix;
+        nextMatrix = null;
+    }
+
+    private boolean getNewCellState(IGameCell cell) {
+        int numberOfNeighbors = getLiveNeighbors(cell);
+        if (numberOfNeighbors < 2) { return false; }
+        else if (numberOfNeighbors > 3) { return false; }
+        else if (numberOfNeighbors == 3) { return true; }
+        else {
+            // stay the same
+            return cell.getState();
+        }
+    }
+
+    private int getLiveNeighbors(IGameCell cell) {
+        int sum=0;
+
+        int row = cell.getY();
+        int col = cell.getX();
+
+        if (row != 0 && col != 0) {    //top left
+            if(isAlive(row-1,col-1)) {
+                sum++;
+            }
+        }
+
+        if (row != 0) {
+            if(isAlive(row-1,col)) { //top
+                sum++;
+            }
+        }
+
+        if (row != 0 && col != cols-1) {//top right
+            if(isAlive(row-1,col+1)) {
+                sum++;
+            }
+        }
+        if (col != 0) {
+            if(isAlive(row,col-1)) { //left
+                sum++;
+            }
+        }
+
+        if (col != cols-1) {
+            if(isAlive(row,col+1)) { //right
+                sum++;
+            }
+        }
+
+        if (row != rows-1 && col != 0) {
+            if(isAlive(row+1,col-1)) { //bottom left
+                sum++;
+            }
+        }
+
+        if (row != rows-1) {
+            if(isAlive(row+1,col)) { //8
+                sum++;
+            }
+        }
+
+        if (row != rows-1 && col != cols-1) {
+            if(isAlive(row+1,col+1)) { //9
+                sum++;
+            }
+        }
+
+        return sum;
+    }
+
+    private boolean isAlive(int row, int col) {
+        return matrix[row][col].getState();
     }
 }

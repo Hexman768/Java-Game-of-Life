@@ -34,16 +34,6 @@ public class GameCell implements IGameCell {
     }
 
     /**
-     * State method to construct a GameCell instance.
-     *
-     * @param state boolean state of GameCell.
-     * @return instance of GameCell.
-     */
-    public static GameCell createGameCell(boolean state) {
-        return new GameCell(state);
-    }
-
-    /**
      * Static method to construct a GameCell instance.
      *
      * @param x Integer x coordinate of GameCell instance.
